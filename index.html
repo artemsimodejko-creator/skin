@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Вгадай число</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      font-size: 16px;
+      width: 80px;
+    }
+
+    button {
+      padding: 8px 16px;
+      margin-left: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    #restart {
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Вгадай число (1–100)</h1>
+  <div>
+    <input type="number" id="guessInput" min="1" max="100" />
+    <button onclick="checkGuess()">Вгадати</button>
+  </div>
+  <div id="message"></div>
+  <button id="restart" onclick="startGame()">Грати ще раз</button>
+
+  <script>
+    let secretNumber;
+    let attempts;
+
+    function startGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById('message').textContent = '';
+      document.getElementById('guessInput').value = '';
+      document.getElementById('guessInput').disabled = false;
+      document.querySelector('button').disabled = false;
+      document.getElementById('restart').style.display = 'none';
+    }
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById('guessInput').value);
+      const message = document.getElementById('message');
+
+      if (isNaN(guess) || guess < 1 || guess > 100) {
+        message.textContent = 'Введіть число від 1 до 100!';
+        return;
+      }
+
+      attempts++;
+
+      if (guess === secretNumber) {
+        message.textContent = `🎉 Ви вгадали число ${secretNumber} за ${attempts} спроб!`;
+        endGame();
+      } else if (guess < secretNumber) {
+        message.textContent = '🔼 Занадто маленьке!';
+      } else {
+        message.textContent = '🔽 Занадто велике!';
+      }
+    }
+
+    function endGame() {
+      document.getElementById('guessInput').disabled = true;
+      document.querySelector('button').disabled = true;
+      document.getElementById('restart').style.display = 'inline-block';
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
